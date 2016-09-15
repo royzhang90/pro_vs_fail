@@ -1,4 +1,9 @@
 
+function choose(choices) {
+      var index = Math.floor(Math.random() * choices.length);
+      return choices[index];
+    }
+
 // get vine search results given search term
 function search_vine(search_term) {
 
@@ -6,7 +11,7 @@ function search_vine(search_term) {
     $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(search_url) + '&callback=?', function(data){
 
         var results = data.contents.data.records;
-        $('#pro').html('<iframe src="'+results[0]['permalinkUrl']+'/embed/simple" width="300" height="300" frameborder="0"></iframe>')
+        $('#pro').html('<iframe src="'+choose(results)['permalinkUrl']+'/embed/simple?audio=1" width="300" height="300" frameborder="0"></iframe>')
 
     });
 
@@ -14,7 +19,7 @@ function search_vine(search_term) {
     $.getJSON('http://whateverorigin.org/get?url=' + encodeURIComponent(fsearch_url) + '&callback=?', function(data){
 
         var fresults = data.contents.data.records;
-        $('#fail').html('<iframe src="'+fresults[0]['permalinkUrl']+'/embed/simple" width="300" height="300" frameborder="0"></iframe>')
+        $('#fail').html('<iframe src="'+choose(fresults)['permalinkUrl']+'/embed/simple?audio=1" width="300" height="300" frameborder="0"></iframe>')
 
     });
 
@@ -24,7 +29,6 @@ function search_vine(search_term) {
 $( document ).ready(function() {
 
     console.log('im alive');
-    search_vine('baking');
 
     function choose(choices) {
       var index = Math.floor(Math.random() * choices.length);
@@ -33,13 +37,25 @@ $( document ).ready(function() {
 
     var search_term = choose([
         'rock climbing',
-        'baking'
+        'skiing',
+        'basketball shot',
+        'skating',
+        'driving',
+        'dancing',
+        'jump',
+        'baseball catch',
+        'hockey'
     ]);
     search_vine(search_term);
+    $('input[type="text"]').val(search_term);
 
     $('button[type="submit"]').click(function(e){
         e.preventDefault();
         search_vine($('input[type="text"]').val());
+    });
+
+    $('button[type="button"]').click(function(e){
+        location.reload();
     });
 
 });
